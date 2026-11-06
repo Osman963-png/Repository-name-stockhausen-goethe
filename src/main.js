@@ -78,6 +78,57 @@ for (let i = 0; i < 10; i++) {
   });
 
 }
+const particleCount = 6000;
+
+const positions = [];
+
+for (
+  let i = 0;
+  i < particleCount;
+  i++
+) {
+
+  positions.push(
+    (Math.random() - 0.5) * 300
+  );
+
+  positions.push(
+    (Math.random() - 0.5) * 300
+  );
+
+  positions.push(
+    (Math.random() - 0.5) * 300
+  );
+
+}
+
+const starGeometry =
+  new THREE.BufferGeometry();
+
+starGeometry.setAttribute(
+  "position",
+  new THREE.Float32BufferAttribute(
+    positions,
+    3
+  )
+);
+
+const starMaterial =
+  new THREE.PointsMaterial({
+    color: 0xffffff,
+    size: 0.2
+  });
+
+const stars =
+  new THREE.Points(
+    starGeometry,
+    starMaterial
+  );
+
+scene.add(stars);
+
+
+
 
 const clock =
   new THREE.Clock();
@@ -121,7 +172,8 @@ animate();
 window.addEventListener(
   "resize",
   () => {
-
+   stars.rotation.y +=
+  0.0005;
     camera.aspect =
       window.innerWidth /
       window.innerHeight;
@@ -135,3 +187,4 @@ window.addEventListener(
 
   }
 );
+
