@@ -2,6 +2,8 @@ import * as THREE from "three";
 
 const scene = new THREE.Scene();
 
+scene.background = new THREE.Color(0x050510);
+
 const camera = new THREE.PerspectiveCamera(
   75,
   window.innerWidth / window.innerHeight,
@@ -9,9 +11,11 @@ const camera = new THREE.PerspectiveCamera(
   1000
 );
 
-camera.position.z = 5;
+camera.position.z = 25;
 
-const renderer = new THREE.WebGLRenderer();
+const renderer = new THREE.WebGLRenderer({
+  antialias: true
+});
 
 renderer.setSize(
   window.innerWidth,
@@ -19,28 +23,115 @@ renderer.setSize(
 );
 
 document.body.innerHTML = "";
-
 document.body.appendChild(
   renderer.domElement
 );
 
-const cube = new THREE.Mesh(
-  new THREE.BoxGeometry(),
-  new THREE.MeshBasicMaterial({
-    color: 0x00ff00,
-    wireframe: true,
-  })
-);
+const colors = [
+  0xffd700,
+  0xff3300,
+  0x0033ff,
+  0x7a00ff,
+  0x00cc66
+];
 
-scene.add(cube);
+const octagons = [];
+
+for (let i = 0; i < 10; i++) {
+
+  const geometry =
+    new THREE.CylinderGeometry(
+      2 + i * 1.5,
+      2 + i * 1.5,
+      0.15,
+      8,
+      1,
+      true
+    );
+
+  const material =
+    new THREE.MeshBasicMaterial({
+      color:
+        colors[
+          i % colors.length
+        ],
+      wireframe: true
+    });
+
+  const mesh =
+    new THREE.Mesh(
+      geometry,
+      material
+    );
+
+  scene.add(mesh);
+
+  octagons.push({
+    mesh,
+    speed:
+      0.001 +
+      Math.random() * 0.005,
+    phase:
+      Math.random() *
+      Math.PI *
+      2
+  });
+
+}
+
+const clock =
+  new THREE.Clock();
 
 function animate() {
-  requestAnimationFrame(animate);
 
-  cube.rotation.x += 0.01;
-  cube.rotation.y += 0.01;
+  requestAnimationFrame(
+    animate
+  );
 
-  renderer.render(scene, camera);
+  const t =
+    clock.getElapsedTime();
+
+  octagons.forEach(
+    (obj, index) => {
+
+      obj.mesh.rotation.x +=
+        obj.speed;
+
+      obj.mesh.rotation.y +=
+        obj.speed;
+
+      obj.mesh.position.z =
+        Math.sin(
+          t +
+          obj.phase
+        ) * 1.5;
+
+    }
+  );
+
+  renderer.render(
+    scene,
+    camera
+  );
+
 }
 
 animate();
+
+window.addEventListener(
+  "resize",
+  () => {
+
+    camera.aspect =
+      window.innerWidth /
+      window.innerHeight;
+
+    camera.updateProjectionMatrix();
+
+    renderer.setSize(
+      window.innerWidth,
+      window.innerHeight
+    );
+
+  }
+);
