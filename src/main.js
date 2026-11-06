@@ -3,6 +3,11 @@ import * as THREE from "three";
 const scene = new THREE.Scene();
 
 scene.background = new THREE.Color(0x050510);
+scene.fog =
+  new THREE.FogExp2(
+    0x050510,
+    0.008
+  );
 
 const camera = new THREE.PerspectiveCamera(
   75,
@@ -27,6 +32,28 @@ document.body.appendChild(
   renderer.domElement
 );
 
+const yellowLight =
+  new THREE.PointLight(
+    0xffd700,
+    500
+  );
+
+const blueLight =
+  new THREE.PointLight(
+    0x3366ff,
+    500
+  );
+
+const redLight =
+  new THREE.PointLight(
+    0xff3300,
+    500
+  );
+
+scene.add(yellowLight);
+scene.add(blueLight);
+scene.add(redLight);
+
 const colors = [
   0xffd700,
   0xff3300,
@@ -50,7 +77,7 @@ for (let i = 0; i < 10; i++) {
     );
 
   const material =
-    new THREE.MeshBasicMaterial({
+    new THREE.MeshPhongMaterial({
       color:
         colors[
           i % colors.length
@@ -141,6 +168,23 @@ function animate() {
 
   const t =
     clock.getElapsedTime();
+    yellowLight.position.x =
+  Math.cos(t * 0.3) * 25;
+
+yellowLight.position.z =
+  Math.sin(t * 0.3) * 25;
+
+blueLight.position.x =
+  Math.cos(t * 0.2 + 2) * 30;
+
+blueLight.position.y =
+  Math.sin(t * 0.2 + 2) * 30;
+
+redLight.position.x =
+  Math.cos(t * 0.4 + 4) * 20;
+
+redLight.position.z =
+  Math.sin(t * 0.4 + 4) * 20;
 
   octagons.forEach(
     (obj, index) => {
