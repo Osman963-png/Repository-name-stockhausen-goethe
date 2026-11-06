@@ -28,7 +28,7 @@ const cube = new THREE.Mesh(
   new THREE.BoxGeometry(),
   new THREE.MeshBasicMaterial({
     color: 0x00ff00,
-    wireframe: true
+    wireframe: true,
   })
 );
 
