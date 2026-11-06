@@ -1,0 +1,19 @@
+{
+  "name": "stokhausen-3d",
+  "version": "0.0.0",
+  "private": true,
+  "type": "module",
+  "scripts": {
+    "dev": "vite",
+    "build": "vite build",
+    "preview": "vite preview"
+  },
+  "devDependencies": {
+    "vite": "^8.3.6"
+  },
+  "dependencies": {
+    "gsap": "^3.15.1",
+    "three": "^0.187.0",
+    "tone": "^15.1.22"
+  }
+}
